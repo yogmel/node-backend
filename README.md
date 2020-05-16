@@ -138,3 +138,30 @@ app.post('/addfriend', (req, res) => {
   res.redirect('/friends'); // redirect to the specified path
 })
 ```
+
+## API
+Short for Application Programming Interface, it is an interface for code to talk to one another.
+
+### XML and JSON
+XML is short for Extended Markup Language, it looks like HTML, but with custom tags.
+```xml
+<person>
+  <age>21</age>
+  <name>Travis</name>
+  <city>Los Angeles</city>
+</person>
+```
+
+JSON is short for Javascript Object Notation. It looks like a Javascript object, but its value have `""` (they are strings).
+
+```json
+{
+  "person": {
+    "age": "21",
+    "name": "Travis",
+    "city": "Los Angeles"
+  }
+}
+```
+
+Both formats can be used when sending API information, although today is more common to see JSON, as most calls are made from Javascript.
