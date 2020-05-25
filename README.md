@@ -241,15 +241,15 @@ It will open the Mongo Shell. Now Mongo commands will work.
 
 REST is a pattern for creating routes, for CRUD (create, read, update and destroy) operations.
 
-| name    | url            | verb   | description                               |
-| ------- | -------------- | ------ | ----------------------------------------- |
-| INDEX   | /dogs          | GET    | Display a list of all dogs                |
-| NEW     | /dogs/new      | GET    | Display form to make a new dog            |
-| CREATE  | /dogs          | POST   | Add new dog to DB, then redirects         |
-| SHOW    | /dogs/:id      | GET    | Shows info about one dog                  |
-| EDIT    | /dogs/:id/edit | GET    | Shows edit for one one dog                |
-| UPDATE  | /dogs/:id      | PUT    | Update info about one dog, then redirects |
-| DESTROY | /dogs/:id      | DELETE | Delete one dog, then redirects            |
+| name    | url            | verb   | description                               | Mongoose Method         |
+| ------- | -------------- | ------ | ----------------------------------------- | ----------------------- |
+| INDEX   | /dogs          | GET    | Display a list of all dogs                | Dog.find()              |
+| NEW     | /dogs/new      | GET    | Display form to make a new dog            | N/A                     |
+| CREATE  | /dogs          | POST   | Add new dog to DB, then redirects         | Dog.create()            |
+| SHOW    | /dogs/:id      | GET    | Shows info about one dog                  | Dog.findById()          |
+| EDIT    | /dogs/:id/edit | GET    | Shows edit for one one dog                | Dog.findById()          |
+| UPDATE  | /dogs/:id      | PUT    | Update info about one dog, then redirects | Dog.findByIdAndUpdate() |
+| DESTROY | /dogs/:id      | DELETE | Delete one dog, then redirects            | Dog.findByIdAndRemove() |
 
 ### Forms and methods
 
