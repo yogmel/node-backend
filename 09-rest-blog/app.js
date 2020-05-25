@@ -19,10 +19,10 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 // Parse information that comes from forms
 app.use(bodyParser.urlencoded({extended: true}));
-// Override methods by adding parameter to URL
-app.use(methodOverride("_method"));
 // Allow use of sanitizer method, to minimize user abuse on forms
 app.use(expressSanitizer());
+// Override methods by adding parameter to URL
+app.use(methodOverride("_method"));
 
 // Mongoose Schema and model config
 const blogSchema = new mongoose.Schema({
@@ -56,6 +56,7 @@ app.get("/blogs/new", (req, res) => {
 })
 
 app.post("/blogs", (req, res) => {
+  req.body.blog.body = req.sanitize(req.body.blog.body)
   Blog.create(req.body.blog, (err, newBlog) => {
     try {
       console.log('new blog created: ', newBlog);
@@ -91,6 +92,7 @@ app.get("/blogs/:id/edit", (req, res) => {
 
 // Update blog post
 app.put("/blogs/:id", (req, res) => {
+  req.body.blog.body = req.sanitize(req.body.blog.body);
   Blog.findByIdAndUpdate(req.params.id, req.body.blog, (err, blog) => {
     try {
       res.redirect(`/blogs/${req.params.id}`)
