@@ -238,9 +238,14 @@ It will open the Mongo Shell. Now Mongo commands will work.
 
 ## RESTful Routes
 
-| name   | url       | verb | description                    |
-| ------ | --------- | ---- | ------------------------------ |
-| INDEX  | /dogs     | GET  | Display a list of all dogs     |
-| NEW    | /dogs/new | GET  | Display form to make a new dog |
-| CREATE | /dogs     | POST | Add new dog to DB              |
-| SHOW   | /dogs/:id | GET  | Shows info about one dog       |
+REST is a pattern for creating routes, for CRUD (create, read, update and destroy) operations.
+
+| name    | url            | verb   | description                               |
+| ------- | -------------- | ------ | ----------------------------------------- |
+| INDEX   | /dogs          | GET    | Display a list of all dogs                |
+| NEW     | /dogs/new      | GET    | Display form to make a new dog            |
+| CREATE  | /dogs          | POST   | Add new dog to DB, then redirects         |
+| SHOW    | /dogs/:id      | GET    | Shows info about one dog                  |
+| EDIT    | /dogs/:id/edit | GET    | Shows edit for one one dog                |
+| UPDATE  | /dogs/:id      | PUT    | Update info about one dog, then redirects |
+| DESTROY | /dogs/:id      | DELETE | Delete one dog, then redirects            |
