@@ -1,0 +1,10 @@
+<h2>Edit blog</h2>
+
+<form action="/blogs/<%= blog._id %>?_method=PUT" method="POST">
+  <input type="text" name="blog[title]" value="<%= blog.title %>">
+  <input type="text" name="blog[image]" value="<%= blog.image %>">
+  <textarea name="blog[body]"><%= blog.body %></textarea>
+  <input type="submit" value="Edit blog">
+</form>
+
+<a href="/blogs">Go back to blogs page</a>

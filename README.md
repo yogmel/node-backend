@@ -250,3 +250,21 @@ REST is a pattern for creating routes, for CRUD (create, read, update and destro
 | EDIT    | /dogs/:id/edit | GET    | Shows edit for one one dog                |
 | UPDATE  | /dogs/:id      | PUT    | Update info about one dog, then redirects |
 | DESTROY | /dogs/:id      | DELETE | Delete one dog, then redirects            |
+
+### Forms and methods
+
+HTML does not support requests with verbs different than POST and GET. To do that, a library must be used, which is `methodOverride`.
+
+**Installation**
+
+```
+npm i method-override --save
+```
+
+**Use**
+
+```javascript
+const methodOverride = require("method-override");
+
+app.use(methodOverride("param")); // the param passed can be any custom string
+```

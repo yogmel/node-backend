@@ -1,15 +1,18 @@
 const express = require("express"),
       mongoose = require("mongoose"),
       bodyParser = require("body-parser"),
+      methodOverride = require("method-override"),
       app = express();
 
 mongoose.connect("mongodb://localhost:27017/rest_blog", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+mongoose.set('useFindAndModify', false);
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 
 // Mongoose model config
 const blogSchema = new mongoose.Schema({
@@ -55,6 +58,27 @@ app.get("/blogs/:id", (req, res) => {
     try {
       res.render("show", {blog});
     } catch (err) {
+      console.log(err);
+    }
+  })
+})
+
+app.get("/blogs/:id/edit", (req, res) => {
+  Blog.findById(req.params.id, (err, blog) => {
+    try{
+      console.log('blog', blog)
+      res.render("edit", {blog});
+    } catch(err) {
+      console.log(err);
+    }
+  })
+})
+
+app.put("/blogs/:id", (req, res) => {
+  Blog.findByIdAndUpdate(req.params.id, req.body.blog, (err, blog) => {
+    try {
+      res.redirect(`/blogs/${req.params.id}`)
+    } catch(err) {
       console.log(err);
     }
   })
