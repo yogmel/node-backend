@@ -84,6 +84,16 @@ app.put("/blogs/:id", (req, res) => {
   })
 })
 
+app.delete('/blogs/:id', (req, res) => {
+  Blog.findByIdAndDelete(req.params.id, (err, blog) => {
+    try {
+      res.redirect('/blogs');
+    } catch(err) {
+      console.log(err)
+    }
+  })
+})
+
 app.listen(3000, 'localhost', () => {
   console.log("server is running");
 })
