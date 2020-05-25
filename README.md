@@ -210,10 +210,11 @@ If there is another column to be accessed by only one user, all of the other row
 
 To run mongo on your machine, you will need to install MongoDB and then start via `mongod`. This varies according to OS, check for [Ubuntu instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/#run-mongodb-community-edition).
 
-Start MongoDB in Ubuntu using `systemd`:
+Start and stop MongoDB in Ubuntu using `systemd`:
 
 ```
 sudo systemctl start mongod
+sudo service mongod stop
 ```
 
 Once it starts, open another terminal window and run, to open its shell:
