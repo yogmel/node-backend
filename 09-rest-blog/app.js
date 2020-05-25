@@ -51,9 +51,14 @@ app.post("/blogs", (req, res) => {
 })
 
 app.get("/blogs/:id", (req, res) => {
-  
+  Blog.findById(req.params.id, (err, blog) => {
+    try {
+      res.render("show", {blog});
+    } catch (err) {
+      console.log(err);
+    }
+  })
 })
-
 
 app.listen(3000, 'localhost', () => {
   console.log("server is running");
