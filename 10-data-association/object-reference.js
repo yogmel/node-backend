@@ -54,3 +54,12 @@ Post.create(
     });
   }
 );
+
+// Find user, add full posts to array instead of object ids and then execute fnnction
+User.findOne({name: "Mell - Obj"}).populate("posts").exec((err, user) => {
+  try {
+    console.log('user: ', user);
+  } catch(err) {
+    console.log(err);
+  }
+})

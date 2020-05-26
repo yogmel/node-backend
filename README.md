@@ -312,6 +312,47 @@ Happens when two types of data are related, for example users, post, likes on po
 
 Relationships can be created via embedded data or object referencing.
 
+#### Embedded Data
+The related data is added into the object.
+
+```javascript
+const postSchema = {
+  title: String,
+  content: String,
+};
+
+const userSchema = {
+  name: String,
+  email: String,
+  posts: [postSchema], // posts are going to be an array of postSchema
+};
+```
+
+#### Object Reference
+Another collection is created and tables are linked via an id.
+
+```javascript
+const postSchema = {
+  title: String,
+  content: String,
+};
+
+const Post = mongoose.model("Post", postSchema);
+
+const userSchema = {
+  name: String,
+  email: String,
+  posts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+    },
+  ],
+};
+
+const User = mongoose.model("User", userSchema);
+```
+
 ## RESTful Routes
 
 REST is a pattern for creating routes, for CRUD (create, read, update and destroy) operations.
@@ -325,8 +366,6 @@ REST is a pattern for creating routes, for CRUD (create, read, update and destro
 | EDIT    | /dogs/:id/edit | GET    | Shows edit for one one dog                | Dog.findById()          |
 | UPDATE  | /dogs/:id      | PUT    | Update info about one dog, then redirects | Dog.findByIdAndUpdate() |
 | DESTROY | /dogs/:id      | DELETE | Delete one dog, then redirects            | Dog.findByIdAndRemove() |
-
-
 
 ---
 
