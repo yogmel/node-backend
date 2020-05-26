@@ -307,6 +307,11 @@ Blog.findByIdAndUpdate(id, update, (err, blog) => {});
 Blog.findByIdAndDelete(id, (err, blog) => {});
 ```
 
+### Data Association
+Happens when two types of data are related, for example users, post, likes on posts etc. The relationship can be one to one, one to many and/or many to many.
+
+Relationships can be created via embedded data or object referencing.
+
 ## RESTful Routes
 
 REST is a pattern for creating routes, for CRUD (create, read, update and destroy) operations.
@@ -321,7 +326,7 @@ REST is a pattern for creating routes, for CRUD (create, read, update and destro
 | UPDATE  | /dogs/:id      | PUT    | Update info about one dog, then redirects | Dog.findByIdAndUpdate() |
 | DESTROY | /dogs/:id      | DELETE | Delete one dog, then redirects            | Dog.findByIdAndRemove() |
 
-## Data Association
+
 
 ---
 
