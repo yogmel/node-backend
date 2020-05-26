@@ -1,6 +1,6 @@
-# Back-end - Node.js
+# Node.js and MongoDB
 
-Collection of notes of back-end course, focusing on Node.js
+Collection of notes, examples and projects - Node.js & MongoDB
 
 ## Node
 
@@ -18,14 +18,6 @@ To execute a node file, execute in the terminal:
 
 ```
 $ node file.js
-```
-
-#### Nodemon
-
-Nodemon is a library used for server watching each file modification.
-
-```
-$ npm i -g nodemon
 ```
 
 ## Express
@@ -143,22 +135,7 @@ For example, in a form, the `action` attribute can point to the post path.
 </form>
 ```
 
-When submitted, the form will send information. But in order to use it, we have to install a support library called "BodyParser". It will parse the object that comes in `req.body`.
-
-```
-$ npm i body-parser --save
-```
-
-```javascript
-const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.post("/addfriend", (req, res) => {
-  const { newfriend } = req.body; // with body-parser we can use the incoming object
-  friends.push(newfriend);
-  res.redirect("/friends"); // redirect to the specified path
-});
-```
+_Note: check Body Parser section_
 
 ## API
 
@@ -189,6 +166,8 @@ JSON is short for Javascript Object Notation. It looks like a Javascript object,
 ```
 
 Both formats can be used when sending API information, although today is more common to see JSON, as most calls are made from Javascript.
+
+---
 
 ## MongoDB
 
@@ -237,6 +216,97 @@ It will open the Mongo Shell. Now Mongo commands will work.
 - `db.collection_name.remove({name: "Name"})`: remove data that matches passed properties
 - `db.collection_name.drop()`: delete all items in collection
 
+### Mongoose
+
+[Mongoose](https://github.com/Automattic/mongoose) allows an easy way to connect Mongo into Node applications.
+
+**Installation**
+
+```
+npm i mongoose --save
+```
+
+**Usage**
+
+```javascript
+const mongoose = require("mongoose");
+
+// connect with mongodb
+mongoose.connect("mongodb://localhost:27017/collection_name", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+// Allows findByIdAndUpdate() and related methods
+mongoose.set("useFindAndModify", false);
+
+// define a model with Schema
+// for all properties: https://github.com/Automattic/mongoose#defining-a-model
+const blogSchema = new mongoose.Schema({
+  title: String,
+  rating: Number,
+  body: String,
+});
+
+const Blog = mongoose.model("Blog", blogSchema);
+```
+
+#### Common functions
+
+Defining and saving a new object:
+
+```javascript
+const firstPost = new Blog({
+  title: "My first blog post",
+  rating: 5,
+  body: "A lot of things to say",
+  created: { type: Date, default: Date.now },
+});
+
+firstPost.save((err, blogPost) => {
+  if (err) {
+    // error handling
+  } else {
+    // success
+  }
+});
+```
+
+Or simply creating (define and saves in a single method):
+
+```javascript
+Blog.create(
+  {
+    title: "My first blog post",
+    rating: 5,
+    body: "A lot of things to say",
+  },
+  (err, blogPost) => {
+    if (err) {
+      // error handling
+    } else {
+      // success
+    }
+  }
+);
+```
+
+Common operations:
+
+```javascript
+// returns all items in a collection
+Blog.find({}, (err, blogs) => {});
+
+// return a single object, that matches the passed id
+Blog.findById(id, (err, blog) => {});
+
+// finds a single object and change it to the updated parameter
+Blog.findByIdAndUpdate(id, update, (err, blog) => {});
+
+// find a single object and delete it
+Blog.findByIdAndDelete(id, (err, blog) => {});
+```
+
 ## RESTful Routes
 
 REST is a pattern for creating routes, for CRUD (create, read, update and destroy) operations.
@@ -251,7 +321,40 @@ REST is a pattern for creating routes, for CRUD (create, read, update and destro
 | UPDATE  | /dogs/:id      | PUT    | Update info about one dog, then redirects | Dog.findByIdAndUpdate() |
 | DESTROY | /dogs/:id      | DELETE | Delete one dog, then redirects            | Dog.findByIdAndRemove() |
 
-### Forms and methods
+## Data Association
+
+---
+
+## Support libraries
+
+### Nodemon
+
+Nodemon is a library used for server watching each file modification.
+
+```
+$ npm i -g nodemon
+```
+
+### Body Parser
+
+When submitted, the form will send information. But in order to use it, we have to install a support library called "BodyParser". It will parse the object that comes in `req.body`.
+
+```
+$ npm i body-parser --save
+```
+
+```javascript
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.post("/addfriend", (req, res) => {
+  const { newfriend } = req.body; // with body-parser we can use the incoming object
+  friends.push(newfriend);
+  res.redirect("/friends"); // redirect to the specified path
+});
+```
+
+### Method Override
 
 HTML does not support requests with verbs different than POST and GET. To do that, a library must be used, which is `methodOverride`.
 
