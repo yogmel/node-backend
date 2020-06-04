@@ -5,25 +5,8 @@ mongoose.connect("mongodb://localhost:27017/data_blog", {
   useUnifiedTopology: true,
 });
 
-const postSchema = {
-  title: String,
-  content: String,
-};
-
-const Post = mongoose.model("Post", postSchema);
-
-const userSchema = {
-  name: String,
-  email: String,
-  posts: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Post",
-    },
-  ],
-};
-
-const User = mongoose.model("User", userSchema);
+const Post = require("./models/post");
+const User = require("./models/user");
 
 // create new user
 User.create({
