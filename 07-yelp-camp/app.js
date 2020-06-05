@@ -4,14 +4,14 @@ const express = require("express"),
   mongoose = require("mongoose"),
   seedDB = require("./seed");
 
-seedDB();
+// seedDB();
 
 mongoose.connect("mongodb://localhost:27017/yelp_camp", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-app.use(express.static("public"));
+app.use(express.static("./public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
@@ -49,17 +49,15 @@ app.get("/campgrounds/new", (req, res) => {
   res.render("new");
 });
 
-app.get("/campgrounds/:id", (req, res) => {
+app.get("/campgrounds/:id", async (req, res) => {
   const { id } = req.params;
 
-  Campground.findById(id, (err, campground) => {
-    try {
-      console.log("campground", campground);
-      res.render("show", { campground });
-    } catch (err) {
-      console.log(err);
-    }
-  });
+  await Campground.findById(id).populate("comments").exec()
+  .then(campground => {
+    console.log("campground", campground);
+    res.render("show", { campground });
+  })
+  .catch(err => { console.log(err) })
 });
 
 app.listen(3000, "localhost", () => {

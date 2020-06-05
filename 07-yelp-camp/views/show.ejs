@@ -1,17 +1,16 @@
 <%- include("partials/header") %>
 
-<h1> This is the id template </h1>
+<h1> <%= campground.name %></h1>
 
-<div class="row text-center" id="campground-grid">
-  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-    <div class="card">
-      <img class="card-img-top" src="<%= campground.image %>" alt="<%= campground.name %>">
-      <div class="card-body">
-        <h5 class="card-title"><%= campground.name %></h5>
-        <p class="card-description"><%= campground.description %></p>
-      </div>
-    </div>
+<img class="" src="<%= campground.image %>" alt="<%= campground.name %>">
+<p class=""><%= campground.description %></p>
+
+<h2>Comments</h2>
+<% campground.comments.forEach((comment) => { %>
+  <div>
+    <p> <%= comment.author %> </p>
+    <p> <%= comment.text %> </p>
   </div>
-</div>
+<% }) %>
 
 <%- include("partials/footer") %>
