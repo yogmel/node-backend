@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 const Campground = require("./models/campgrounds");
+const Comment = require("./models/comment");
 
 app.get("/", (req, res) => {
   res.render("landing");
@@ -46,7 +47,7 @@ app.post("/campgrounds", (req, res) => {
 });
 
 app.get("/campgrounds/new", (req, res) => {
-  res.render("new");
+  res.render("campgrounds/new");
 });
 
 app.get("/campgrounds/:id", async (req, res) => {
@@ -54,11 +55,34 @@ app.get("/campgrounds/:id", async (req, res) => {
 
   await Campground.findById(id).populate("comments").exec()
   .then(campground => {
-    console.log("campground", campground);
-    res.render("show", { campground });
+    res.render("campgrounds/show", { campground });
   })
   .catch(err => { console.log(err) })
 });
+
+// Comments routes
+app.get("/campgrounds/:id/comments/new", async (req, res) => {
+  const { id } = req.params;
+  await Campground.findById(id)
+  .then(campground => {
+    res.render("comments/new", { campground });
+  })
+  .catch(err => { console.log(err) })
+});
+
+app.post("/campgrounds/:id/comments", async (req, res) => {
+  const { comment } = req.body;
+  
+  const campground = await Campground.findById(req.params.id)
+
+  await Comment.create(comment)
+  .then(comment => {
+    campground.comments.push(comment);
+    campground.save();
+  })
+  
+  res.redirect(`/campgrounds/${req.params.id}`);
+})
 
 app.listen(3000, "localhost", () => {
   console.log("server has started");
