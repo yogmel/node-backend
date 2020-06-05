@@ -32,8 +32,30 @@ Both formats can be used when sending API information, although today is more co
 
 ---
 
+## Request Promise
+To perform a request, we need to install `request-promise`.
 
-# RESTful Routes
+```
+$ npm i --save request-promise
+```
+
+```javascript
+const request = require("request-promise");
+
+app.get('/results', (req, res) => {
+  const query = req.query.search;
+  request(`http://www.omdbapi.com/?s=${query}&apikey=thewdb`)
+  .then((json) => {
+    const data = JSON.parse(json);
+    res.render('results', { data });
+  })
+  .catch(err => {console.log(err)})
+})
+```
+
+---
+
+## RESTful Routes
 
 REST is a pattern for creating routes, for CRUD (create, read, update and destroy) operations.
 

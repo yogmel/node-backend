@@ -38,7 +38,7 @@ var app = express();
 First of all, you need to initializate the server:
 
 ```javascript
-app.listen(3000, "localhost", function () {
+app.listen(3000, "localhost", () => {
   console.log("Server now listening");
 });
 ```
@@ -81,10 +81,17 @@ app.get("/dog/:breed", function (req, res) {
 It is important to also add a route if the requested path does not match any of the previouly specified ones. Add it last in the routes definition.
 
 ```javascript
-app.get("*", function (req, res) {
+app.get("*", (req, res) => {
   res.send("Page not found");
 });
 ```
+
+**Some methods**
+
+`res.send("message")`: render a page with passed value
+`res.render("index.ejs")`: render specific page
+`res.redirect("/path")`: calls another route
+
 
 ## Post requests
 

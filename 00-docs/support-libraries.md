@@ -10,6 +10,14 @@ Nodemon is a library used for server watching each file modification.
 $ npm i -g nodemon
 ```
 
+**Use**
+
+```
+$ nodemon app.js
+```
+
+Now `app.js` is being watched for changes.
+
 ## Body Parser
 
 When submitted, the form will send information. But in order to use it, we have to install a support library called "BodyParser". It will parse the object that comes in `req.body`.
@@ -18,31 +26,48 @@ When submitted, the form will send information. But in order to use it, we have 
 $ npm i body-parser --save
 ```
 
-```javascript
-const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.post("/addfriend", (req, res) => {
-  const { newfriend } = req.body; // with body-parser we can use the incoming object
-  friends.push(newfriend);
-  res.redirect("/friends"); // redirect to the specified path
-});
-```
-
 ## Method Override
 
 HTML does not support requests with verbs different than POST and GET. To do that, a library must be used, which is `methodOverride`.
-
-**Installation**
 
 ```
 npm i method-override --save
 ```
 
-**Use**
+## Express Sanitizer
+
+A security layer for input forms.
+
+```
+$ npm i --save express-sanitizer
+```
+
+### Final setup
 
 ```javascript
-const methodOverride = require("method-override");
+const express = require("express"),
+  mongoose = require("mongoose"),
+  bodyParser = require("body-parser"),
+  methodOverride = require("method-override"),
+  expressSanitizer = require("express-sanitizer"),
+  app = express();
 
-app.use(methodOverride("param")); // the param passed can be any custom string
+// Server and DB setup
+// Connects db to rest_blog collection
+mongoose.connect("mongodb://localhost:27017/rest_blog", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+// Allows findByIdAndUpdate() and related methods
+mongoose.set("useFindAndModify", false);
+// Set default view engine to ejs
+app.set("view engine", "ejs");
+// App will use public directory as default root
+app.use(express.static("public"));
+// Parse information that comes from forms
+app.use(bodyParser.urlencoded({ extended: true }));
+// Allow use of sanitizer method, to minimize user abuse on forms
+app.use(expressSanitizer());
+// Override methods by adding parameter to URL
+app.use(methodOverride("_method"));
 ```

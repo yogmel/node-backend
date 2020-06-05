@@ -10,6 +10,14 @@ Short for [Embedded JavaScript](https://ejs.co/), it allows the addition of Java
 $ npm i ejs
 ```
 
+In `app.js`, for ease development, the app can set the defaul view engine to be the .ejs format.
+
+```javascript
+app.set("view engine", "ejs");
+
+res.render("results", { data }); // there is no need to add .ejs to the "results" string
+```
+
 Create a file with the `.ejs` extension in order to create the template. HMTlL markup can be used, along with Javascript syntax, adding some `<%= %>` tags, if there is something to return:
 
 ```javascript
