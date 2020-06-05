@@ -8,18 +8,11 @@ mongoose.connect("mongodb://localhost:27017/yelp_camp", {
   useUnifiedTopology: true,
 });
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
-// SCHEMA SETUP
-const campgroundsSchema = new mongoose.Schema({
-  name: String,
-  image: String,
-  description: String
-})
-
-const Campground = mongoose.model("Campground", campgroundsSchema);
+const Campground = require("./models/campgrounds");
 
 app.get('/', (req, res) => {
   res.render('landing');

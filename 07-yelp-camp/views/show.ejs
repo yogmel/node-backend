@@ -1,3 +1,5 @@
+<%- include("partials/header") %>
+
 <h1> This is the id template </h1>
 
 <div class="row text-center" id="campground-grid">
@@ -7,8 +9,9 @@
       <div class="card-body">
         <h5 class="card-title"><%= campground.name %></h5>
         <p class="card-description"><%= campground.description %></p>
-        <a href="/campground/<%= campground._id %>" class="btn btn-primary">More Info</a>
       </div>
     </div>
   </div>
 </div>
+
+<%- include("partials/footer") %>
