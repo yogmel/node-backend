@@ -15,7 +15,7 @@ app.get("/dog/:breed", (req, res) => {
 });
 
 // order matters, that is why the 404 is the last route
-app.get("*", (req, res) => {
+app.get("*", (_, res) => {
   res.send("you are a start");
 });
 

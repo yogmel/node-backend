@@ -15,34 +15,34 @@ User.create({
 });
 
 // create post and add reference to user
-Post.create(
-  {
-    title: "Now referencing objects",
-    content: "Content of a post",
-  },
-  (err, post) => {
-    User.findOne({ name: "Mell - Obj" }, (err, user) => {
-      try {
-        user.posts.push(post);
-        user.save((err, user) => {
-          try {
-            console.log("post saved");
-          } catch (err) {
-            console.log(err);
-          }
+Post.create({
+  title: "Now referencing objects",
+  content: "Content of a post",
+}).then((post) => {
+  User.findOne({ name: "Mell - Obj" })
+    .then((user) => {
+      user.posts.push(post);
+      user
+        .save()
+        .then((user) => {
+          console.log("post saved");
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      } catch (err) {
-        console.log(err);
-      }
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  }
-);
+});
 
 // Find user, add full posts to array instead of object ids and then execute fnnction
-User.findOne({name: "Mell - Obj"}).populate("posts").exec((err, user) => {
-  try {
-    console.log('user: ', user);
-  } catch(err) {
+User.findOne({ name: "Mell - Obj" })
+  .populate("posts")
+  .exec()
+  .then((user) => {
+    console.log("user: ", user);
+  })
+  .catch((err) => {
     console.log(err);
-  }
-})
+  });

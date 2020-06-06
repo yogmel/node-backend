@@ -1,6 +1,6 @@
 const faker = require('faker');
 
-const listProducts = (num) => {
+const listProducts = num => {
   console.log('===============');
   console.log('WELCOME TO SHOP');
   console.log('===============');

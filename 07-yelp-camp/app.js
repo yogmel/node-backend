@@ -23,37 +23,37 @@ app.get("/", (req, res) => {
 });
 
 app.get("/campgrounds", (req, res) => {
-  Campground.find({}, (err, campgrounds) => {
-    try {
-      res.render("index", { campgrounds });
-    } catch (err) {
-      console.log(err);
-    }
-  });
+  Campground.find({})
+  .then(campgrounds => {
+    res.render("index", { campgrounds });
+  })
+  .catch(err => {
+    console.log(err);
+  })
 });
 
 app.post("/campgrounds", (req, res) => {
   const { name, imgurl: image, description } = req.body;
 
-  Campground.create({ name, image, description }, (err, campground) => {
-    try {
-      console.log("NEWLY CREATED CAMPGROUND:");
-      console.log(campground);
-      res.redirect("/campgrounds");
-    } catch {
-      console.log(err);
-    }
-  });
+  Campground.create({ name, image, description })
+  .then(campground => {
+    console.log("NEWLY CREATED CAMPGROUND:");
+    console.log(campground);
+    res.redirect("/campgrounds");
+  })
+  .catch(err => {
+    console.log(err);
+  })
 });
 
 app.get("/campgrounds/new", (req, res) => {
   res.render("campgrounds/new");
 });
 
-app.get("/campgrounds/:id", async (req, res) => {
+app.get("/campgrounds/:id", (req, res) => {
   const { id } = req.params;
 
-  await Campground.findById(id).populate("comments").exec()
+  Campground.findById(id).populate("comments").exec()
   .then(campground => {
     res.render("campgrounds/show", { campground });
   })
@@ -61,9 +61,9 @@ app.get("/campgrounds/:id", async (req, res) => {
 });
 
 // Comments routes
-app.get("/campgrounds/:id/comments/new", async (req, res) => {
+app.get("/campgrounds/:id/comments/new", (req, res) => {
   const { id } = req.params;
-  await Campground.findById(id)
+  Campground.findById(id)
   .then(campground => {
     res.render("comments/new", { campground });
   })
@@ -75,7 +75,7 @@ app.post("/campgrounds/:id/comments", async (req, res) => {
   
   const campground = await Campground.findById(req.params.id)
 
-  await Comment.create(comment)
+  Comment.create(comment)
   .then(comment => {
     campground.comments.push(comment);
     campground.save();

@@ -92,7 +92,6 @@ app.get("*", (req, res) => {
 `res.render("index.ejs")`: render specific page
 `res.redirect("/path")`: calls another route
 
-
 ## Post requests
 
 The Express method `.post()` can be used in a similar way of `.get()`. When the path is called, it will perform a series of actions.

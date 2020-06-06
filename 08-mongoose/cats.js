@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 mongoose.connect("mongodb://localhost:27017/cat_app", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -22,33 +23,34 @@ const george = new Cat({
 });
 
 // save into the database
-george.save((err, cat) => {
-  if (err) {
-    console.log("Something went wrong");
-  } else {
+george
+  .save()
+  .then((cat) => {
     console.log("We just saved a cat");
     console.log(cat);
-  }
-});
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // create method both create the object and save it into the database
 Cat.create({
   name: "Mr. Norris",
   age: 7,
   temperament: "Evil",
-}, (err, cat) => {
-  if (err) {
-    console.log("Something went wrong");
-  } else {
+})
+  .then((cat) => {
     console.log("We just saved a cat");
     console.log(cat);
-  }
-})
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
-Cat.find({}, (err, cats) => {
-  if (err) {
-    console.log("error: ", err);
-  } else {
+Cat.find({})
+  .then((cats) => {
     console.log("all the cats, ", cats);
-  }
-});
+  })
+  .catch((err) => {
+    console.log(err);
+  });

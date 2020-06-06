@@ -29,29 +29,30 @@ newUser.posts.push({
   content: "Content of a post",
 });
 
-newUser.save((err, user) => {
-  try {
+newUser
+  .save()
+  .then((user) => {
     console.log("user created: ", user);
-  } catch (err) {
+  })
+  .catch((err) => {
     console.log(err);
-  }
-});
+  });
 
 // find a user and add post
-User.findOne({ name: "Mell" }, (err, user) => {
-  try {
+User.findOne({ name: "Mell" })
+  .then((user) => {
     user.posts.push({
       title: "This post was added after user creation",
       content: "New content",
     });
-    user.save((err, user) => {
-      try {
-        console.log("post posted");
-      } catch (err) {
-        console.log(err);
-      }
-    });
-  } catch (err) {
+    user.save()
+    .then(user => {
+      console.log("post posted");
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  })
+  .catch((err) => {
     console.log(err);
-  }
-});
+  });

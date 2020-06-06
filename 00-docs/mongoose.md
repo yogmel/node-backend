@@ -92,11 +92,13 @@ Blog.findByIdAndDelete(id, (err, blog) => {});
 ```
 
 # Data Association
+
 Happens when two types of data are related, for example users, post, likes on posts etc. The relationship can be one to one, one to many and/or many to many.
 
 Relationships can be created via embedded data or object referencing.
 
 ## Embedded Data
+
 The related data is added into the object.
 
 ```javascript
@@ -113,6 +115,7 @@ const userSchema = {
 ```
 
 ## Object Reference
+
 Another collection is created and tables are linked via an id.
 
 ```javascript
