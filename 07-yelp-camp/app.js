@@ -2,6 +2,11 @@ const express = require("express"),
   app = express(),
   bodyParser = require("body-parser"),
   mongoose = require("mongoose"),
+  passport = require("passport"),
+  LocalStrategy = require("passport-local"),
+  Campground = require("./models/campgrounds"),
+  Comment = require("./models/comment"),
+  User = require('./models/user'),
   seedDB = require("./seed");
 
 // seedDB();
@@ -14,9 +19,6 @@ mongoose.connect("mongodb://localhost:27017/yelp_camp", {
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-
-const Campground = require("./models/campgrounds");
-const Comment = require("./models/comment");
 
 app.get("/", (req, res) => {
   res.render("landing");
