@@ -21,6 +21,13 @@
         <li class="nav-item <%= typeof page !== 'undefined' && page === 'campgrounds' ? 'active' : '' %>">
           <a href="/campgrounds" class="nav-link">Home</a>
         </li>
+        <% if(!user) { %>
+          <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+          <li class="nav-item"><a href="/register" class="nav-link">Signup</a></li>
+        <% } else { %>
+          <li>Signed in as: <%= user.username %></li>
+          <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
+        <% } %>
       </ul>
 
     </div>
