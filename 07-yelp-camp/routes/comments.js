@@ -27,8 +27,12 @@ router.post("/", isLoggedIn, async (req, res) => {
 
   Comment.create(comment)
   .then(comment => {
+    comment.author.id = req.user._id;
+    comment.author.username = req.user.username;
+    comment.save();
     campground.comments.push(comment);
     campground.save();
+    console.log(comment)
   })
   
   res.redirect(`/campgrounds/${req.params.id}`);
