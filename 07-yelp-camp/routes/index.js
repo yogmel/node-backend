@@ -29,13 +29,16 @@ router.post("/register", (req, res) => {
 
 router.get("/login", (req, res) => {
   const { user } = req;
-  res.render("login", {user});
+  const { origin } = req.query;
+  res.render("login", {user, origin});
 })
-
+ 
 router.post("/login", passport.authenticate("local", {
-  successRedirect: "/campgrounds",
-  failureRedirect: "/login"
-}))
+  failureRedirect: "/login" 
+}), (req, res) => {
+  const { origin } = req.query;
+  res.redirect("/campgrounds" + origin);
+})
 
 router.get("/logout", (req, res) => {
   req.logout();

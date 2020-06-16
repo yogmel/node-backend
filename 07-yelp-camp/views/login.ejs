@@ -2,7 +2,7 @@
 
 <h1>Here it is the login page</h1>
 
-<form action="/login" method="POST">
+<form action="/login?origin=<%= origin %>" method="POST">
   <input type="text" name="username" placeholder="username">
   <input type="password" name="password" placeholder="password">
   <input type="submit" value="Log in">
