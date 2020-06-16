@@ -5,7 +5,6 @@ const isLoggedIn = require("./../middleware/isLoggedIn");
 
 router.get("/", (req, res) => {
   const { user } = req;
-  console.log(user)
   Campground.find({})
   .then(campgrounds => {
     res.render("index", { campgrounds, user });
@@ -22,8 +21,6 @@ router.post("/", isLoggedIn, (req, res) => {
 
   Campground.create({ name, image, description , author})
   .then(campground => {
-    console.log("NEWLY CREATED CAMPGROUND:");
-    console.log(campground);
     res.redirect("/campgrounds");
   })
   .catch(err => {
@@ -44,5 +41,25 @@ router.get("/:id", (req, res) => {
   })
   .catch(err => { console.log(err) })
 });
+
+// EDIT
+router.get("/:id/edit", isLoggedIn, (req, res) => {
+  Campground.findById(req.params.id)
+  .then(campground => {
+    res.render("campgrounds/edit", { campground });
+  })
+  .catch(err => console.log(err));
+})
+
+// UPDATE
+router.put("/:id", (req, res) => { 
+  const { id } = req.params;
+  const { campground } = req.body;
+  Campground.findByIdAndUpdate(id, campground)
+  .then(campground => {
+    res.redirect("/campgrounds/" + id);
+  })
+  .catch(err => { console.log(err) })
+})
 
 module.exports = router;
