@@ -62,4 +62,16 @@ router.put("/:id", (req, res) => {
   .catch(err => { console.log(err) })
 })
 
+// DESTROY
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  Campground.findById(id)
+  .then(campground => {
+    console.log('camp deleted: ', campground);
+    campground.remove();
+    res.redirect("/campgrounds")
+  })
+  .catch(err => { console.log(err) })
+})
+
 module.exports = router;
