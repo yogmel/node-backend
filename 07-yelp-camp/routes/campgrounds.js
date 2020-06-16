@@ -43,7 +43,7 @@ router.get("/:id", (req, res) => {
 });
 
 // EDIT
-router.get("/:id/edit", isLoggedIn, (req, res) => {
+router.get("/:id/edit", checkCampgroundOwnership, (req, res) => {
   Campground.findById(req.params.id)
   .then(campground => {
     res.render("campgrounds/edit", { campground });
@@ -52,7 +52,7 @@ router.get("/:id/edit", isLoggedIn, (req, res) => {
 })
 
 // UPDATE
-router.put("/:id", (req, res) => { 
+router.put("/:id", checkCampgroundOwnership, (req, res) => { 
   const { id } = req.params;
   const { campground } = req.body;
   Campground.findByIdAndUpdate(id, campground)
@@ -63,7 +63,7 @@ router.put("/:id", (req, res) => {
 })
 
 // DESTROY
-router.delete("/:id", (req, res) => {
+router.delete("/:id", checkCampgroundOwnership, (req, res) => {
   const { id } = req.params;
   Campground.findById(id)
   .then(campground => {
@@ -73,5 +73,21 @@ router.delete("/:id", (req, res) => {
   })
   .catch(err => { console.log(err) })
 })
+
+function checkCampgroundOwnership(req, res, next) {
+  if(req.isAuthenticated()) {
+    Campground.findById(req.params.id)
+    .then(campground => {
+      if(campground.author.id.equals(req.user._id)) {
+        next();
+      } else {
+        res.redirect("back");
+      }
+    })
+    .catch(() => {res.redirect("back")})
+  } else {
+    res.redirect("back");
+  }
+}
 
 module.exports = router;
