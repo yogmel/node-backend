@@ -5,6 +5,7 @@ const express = require("express"),
   passport = require("passport"),
   LocalStrategy = require("passport-local"),
   User = require('./models/user'),
+  methodOverride = require("method-override");
   seedDB = require("./seed");
 
 const commentRoutes = require("./routes/comments"),
@@ -18,8 +19,9 @@ mongoose.connect("mongodb://localhost:27017/yelp_camp", {
   useUnifiedTopology: true,
 });
 
-app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname + "/public"));
+app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 
 // Passport configuration
