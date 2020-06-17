@@ -49,7 +49,10 @@ const seedDB = async () => {
     const campground = await Campground.create(seed);
     const comment = await Comment.create({
       text: "This place is great, but I wish there was internet",
-      author: "Homer",
+      author: {
+        id : "588c2e092403d111454fff77",
+        username: "Jane"
+      }
     });
     campground.comments.push(comment);
     campground.save();
