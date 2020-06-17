@@ -15,11 +15,11 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", middleware.isLoggedIn, (req, res) => {
-  const { name, imgurl: image, description } = req.body;
+  const { name, imgurl: image, description, price } = req.body;
   const { _id: id, username } = req.user;
   const author = { id, username };
 
-  Campground.create({ name, image, description, author })
+  Campground.create({ name, image, description, author, price })
     .then(() => {
       req.flash("success", `Campground ${name} created successfully`);
       res.redirect("/campgrounds");
