@@ -18,11 +18,13 @@ router.post("/register", (req, res) => {
   User.register(new User({username}), password)
   .then(user => { 
     passport.authenticate("local")(req, res, () => {
+      req.flash("success", "Welcome, ", user.username);
       res.redirect("/campgrounds");
     })
   })
   .catch(err => {
     console.log(err);
+    req.flash("error", err.message);
     res.redirect("/register")
   })
 })
@@ -34,14 +36,17 @@ router.get("/login", (req, res) => {
 })
  
 router.post("/login", passport.authenticate("local", {
-  failureRedirect: "/login" 
+  failureRedirect: "/login",
+  failureFlash: true
 }), (req, res) => {
   const { origin } = req.query;
+  req.flash("success", "You are now logged in");
   res.redirect("/campgrounds" + origin);
 })
 
 router.get("/logout", (req, res) => {
   req.logout();
+  req.flash("success", "You were logged out.");
   res.redirect("/campgrounds");
 })
 
