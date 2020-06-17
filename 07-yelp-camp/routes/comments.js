@@ -2,11 +2,10 @@ const express = require("express");
 const router = express.Router({mergeParams: true});
 const Comment = require("./../models/comment");
 const Campground = require("./../models/campgrounds");
-const isLoggedIn = require("./../middleware/isLoggedIn");
-const user = require("../models/user");
+const middleware = require("./../middleware");
 
 // CREATE routes
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
   const { id } = req.params;
   Campground.findById(id)
   .then(campground => {
@@ -15,7 +14,7 @@ router.get("/new", isLoggedIn, (req, res) => {
   .catch(err => { console.log(err) })
 });
 
-router.post("/", isLoggedIn, async (req, res) => {
+router.post("/", middleware.isLoggedIn, async (req, res) => {
   const { comment } = req.body;
   
   const campground = await Campground.findById(req.params.id)
@@ -34,7 +33,7 @@ router.post("/", isLoggedIn, async (req, res) => {
 })
 
 // EDIT
-router.get("/:comment_id/edit", checkCommentOwnership, (req, res) => {
+router.get("/:comment_id/edit", middleware.checkCommentOwnership, (req, res) => {
   const { id, comment_id } = req.params;
   Comment.findById(comment_id)
   .then(comment => {
@@ -44,7 +43,7 @@ router.get("/:comment_id/edit", checkCommentOwnership, (req, res) => {
 })
 
 // UPDATE
-router.put("/:comment_id", checkCommentOwnership, (req, res) => {
+router.put("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
   const { id, comment_id } = req.params;
   const { comment } = req.body;
   Comment.findByIdAndUpdate(comment_id, comment)
@@ -55,7 +54,7 @@ router.put("/:comment_id", checkCommentOwnership, (req, res) => {
 });
 
 // DELETE
-router.delete("/:comment_id", checkCommentOwnership, (req, res) => {
+router.delete("/:comment_id", middleware.checkCommentOwnership, (req, res) => {
   const { id, comment_id } = req.params;
   Comment.findByIdAndDelete(comment_id)
   .then(() => {
@@ -64,19 +63,5 @@ router.delete("/:comment_id", checkCommentOwnership, (req, res) => {
   .catch(err => {console.log(err); res.redirect("back");})
 })
 
-function checkCommentOwnership(req, res, next) {
-  if(req.isAuthenticated()) {
-    const { comment_id } = req.params;
-    Comment.findById(comment_id)
-    .then(comment => {
-      if(comment.author.id.equals(req.user._id)) {
-        next();
-      }
-    })
-    .catch(err => {res.redirect("back");})
-  } else {
-    res.redirect("back");
-  }
-}
 
 module.exports = router;
