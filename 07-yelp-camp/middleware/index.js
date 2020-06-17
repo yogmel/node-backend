@@ -6,6 +6,7 @@ const middlewareObj = {
     if(req.isAuthenticated()) {
       return next();
     }
+    req.flash("error", "Please login first!");
     res.redirect("/login?origin=" + req.route.path);
   },
   checkCampgroundOwnership: (req, res, next) => {
@@ -18,8 +19,9 @@ const middlewareObj = {
           res.redirect("back");
         }
       })
-      .catch(() => {res.redirect("back")})
+      .catch(() => {req.flash("error", "You are not the campground author"); res.redirect("back")})
     } else {
+      req.flash("error", "Please login first!");
       res.redirect("back");
     }
   },

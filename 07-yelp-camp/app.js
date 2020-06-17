@@ -3,6 +3,7 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   mongoose = require("mongoose"),
   passport = require("passport"),
+  flash = require("connect-flash"),
   LocalStrategy = require("passport-local"),
   User = require('./models/user'),
   methodOverride = require("method-override");
@@ -23,6 +24,7 @@ mongoose.connect("mongodb://localhost:27017/yelp_camp", {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
+app.use(flash());
 app.set("view engine", "ejs");
 
 // Passport configuration
@@ -41,6 +43,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
+  res.locals.error = req.flash("error");
+  res.locals.success = req.flash("success");
   next();
 })
 
