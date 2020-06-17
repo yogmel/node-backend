@@ -7,6 +7,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const friends = ["Linda", "Jess", "Clau", "Deco"];
 
+app.get("/", (_, res) => {
+  res.render("friends", { friends });
+});
+
 app.get("/friends", (_, res) => {
   res.render("friends", { friends });
 });
