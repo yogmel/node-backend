@@ -39,14 +39,24 @@ router.get(
   middleware.checkCommentOwnership,
   (req, res) => {
     const { id, comment_id } = req.params;
-    Comment.findById(comment_id)
-      .then((comment) => {
-        res.render("comments/edit", { id, comment });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.redirect("back");
-      });
+    Campground.findById(id)
+    .then(campground => {
+      if (campground === null) throw new Error("Campground not found");
+      Comment.findById(comment_id)
+        .then((comment) => {
+          res.render("comments/edit", { id, comment });
+        })
+        .catch((err) => {
+          req.flash("error", err.message);
+          res.redirect("back");
+        });
+    })
+    .catch(err => {
+      req.flash("error", "Campground not found");
+      return res.redirect("back");
+    })
+
+
   }
 );
 

@@ -40,10 +40,12 @@ router.get("/:id", (req, res) => {
     .populate("comments")
     .exec()
     .then((campground) => {
+      if (campground === null) throw new Error("Campground not found");
       res.render("campgrounds/show", { campground });
     })
     .catch((err) => {
-      console.log(err);
+      req.flash("error", err.message);
+      res.redirect("back");
     });
 });
 
