@@ -5,8 +5,8 @@ const express = require("express"),
   passport = require("passport"),
   flash = require("connect-flash"),
   LocalStrategy = require("passport-local"),
-  User = require('./models/user'),
-  methodOverride = require("method-override");
+  User = require("./models/user"),
+  methodOverride = require("method-override"),
   seedDB = require("./seed");
 
 const commentRoutes = require("./routes/comments"),
@@ -15,16 +15,12 @@ const commentRoutes = require("./routes/comments"),
 
 // seedDB();
 
-// mongoose.connect("mongodb://localhost:27017/yelp_camp", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   useFindAndModify: false
-// });
+const url = process.env.DATABASEURL || "mongodb://localhost:27017/yelp_camp";
 
-mongoose.connect("mongodb+srv://yogmel:taetiseo252422@cluster0-mw0no.mongodb.net/yelpcamp?retryWrites=true&w=majority", {
+mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false
+  useFindAndModify: false,
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,11 +30,13 @@ app.use(flash());
 app.set("view engine", "ejs");
 
 // Passport configuration
-app.use(require("express-session")({
-  secret: "Once again Rusty wins cutest dog!",
-  resave: false,
-  saveUninitialized: false
-}))
+app.use(
+  require("express-session")({
+    secret: "Once again Rusty wins cutest dog!",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -52,12 +50,12 @@ app.use((req, res, next) => {
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success");
   next();
-})
+});
 
 app.use("/campgrounds/:id/comments", commentRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/", indexRoutes);
 
-app.listen(3000, "localhost", () => {
+app.listen(process.env.PORT, process.env.IP, () => {
   console.log("server has started");
 });
