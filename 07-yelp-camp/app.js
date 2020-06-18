@@ -15,7 +15,13 @@ const commentRoutes = require("./routes/comments"),
 
 // seedDB();
 
-mongoose.connect("mongodb://localhost:27017/yelp_camp", {
+// mongoose.connect("mongodb://localhost:27017/yelp_camp", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useFindAndModify: false
+// });
+
+mongoose.connect("mongodb+srv://yogmel:taetiseo252422@cluster0-mw0no.mongodb.net/yelpcamp?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
