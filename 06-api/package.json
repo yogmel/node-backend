@@ -12,7 +12,7 @@
     "express": "^4.17.1"
   },
   "dependencies": {
-    "ejs": "^3.1.2",
+    "ejs": "^3.1.7",
     "request-promise": "^4.2.5"
   }
 }
